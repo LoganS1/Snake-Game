@@ -21,17 +21,12 @@ canvas {
   z-index: -1;
 }
 
-.disappear {
-  display: none;
-}
-
-#menu {
-  width: 500px;
-  margin: auto;
-}
-
 h1 {
   text-align: center;
+}
+
+.disappear {
+  display: none;
 }
 
 .scores {
@@ -39,6 +34,11 @@ h1 {
   display: inline-block;
   margin: 20px auto;
   width: 49%;
+}
+
+#menu {
+  width: 500px;
+  margin: auto;
 }
 
 #playBTN {

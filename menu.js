@@ -1,8 +1,4 @@
-function menuDraw(){
-
-}
-
-function menuUpdate(){
+unction menuUpdate(){
   alert("GAME OVER \nFinal Score: " + score);
   reset();
 }
