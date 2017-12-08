@@ -1,0 +1,57 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: black;
+  color: white;
+  z-index: -1;
+}
+
+canvas {
+  position: absolute;
+  height: 95%;
+  border: 2px solid white;
+  box-shadow: 0 0 20px white;
+  z-index: -1;
+}
+
+.disappear {
+  display: none;
+}
+
+#menu {
+  width: 500px;
+  margin: auto;
+}
+
+h1 {
+  text-align: center;
+}
+
+.scores {
+  text-align: center;
+  display: inline-block;
+  margin: 20px auto;
+  width: 49%;
+}
+
+#playBTN {
+  margin: 0 auto;
+  display: block;
+  background-color: black;
+  color: white;
+  padding: 5px 50px;
+  border: 1px solid white;
+  transition: all 0.5s;
+}
+
+#playBTN:hover {
+  background-color: white;
+  color: black;
+}

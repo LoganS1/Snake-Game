@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Snake</title>
+    <link rel="stylesheet" href="stylesheet.css">
+  </head>
+  <body>
+    <canvas id="canvas" class="" width="300" height="300">
+      Sorry, Your browser does not support canvas... Please use the latest version of Chrome or Firefox.
+    </canvas>
+    <div id="menu">
+      <div class="name">
+        <h1>SNAKE</h1>
+      </div>
+      <div class="scores">
+        <h4>Your High Score: <br /><span id="highScore">0</span></h4>
+      </div>
+      <div class="scores">
+        <h4>Last Play's Score: <br /><span id="lastScore">0</span></h4>
+      </div>
+      <button id="playBTN" onClick="gameState = 'ready';">Play</button>
+    </div>
+    <script type="text/javascript" src="script.js"></script>
+    <script type="text/javascript" src="canvas.js"></script>
+    <script type="text/javascript" src="menu.js"></script>
+    <script type="text/javascript" src="food.js"></script>
+    <script type="text/javascript" src="block.js"></script>
+  </body>
+</html>
