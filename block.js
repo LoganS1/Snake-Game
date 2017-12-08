@@ -8,12 +8,29 @@ function drawBlocks(){
 
 //UPDATING
 function updateBlocks(){
+  //Looks to see if a block is queudd to be added
+  //if so, add that block
   if(addBlock.yes){
     blocks.push(addBlock.block);
     addBlock.yes = false;
     addBlock.block = "";
   }
+  moveTailBlocks();
+  moveHeadBlock();
+}
 
+//UTILS
+function createBlock(){
+  /*sets the new block to be in the same place as the current tail block
+    then puts it in the queue to be added next cycle (to prevent the block from being inside another
+    block and acitvating the collision detection) */
+  this.x = blocks[blocks.length - 1].x;
+  this.y = blocks[blocks.length - 1].y;
+  addBlock.block = new Block(this.x, this.y, blocks[blocks.length - 1].dir);
+  addBlock.yes = true;
+}
+
+function moveHeadBlock(){
   this.frontBlock = blocks[0];
     if(this.frontBlock.dir === "up" && this.frontBlock.y > 0){
       this.frontBlock.y -= options.blockSize;
@@ -26,15 +43,10 @@ function updateBlocks(){
     }
 }
 
-//UTILS
-function createBlock(){
-  this.x = blocks[blocks.length - 1].x;
-  this.y = blocks[blocks.length - 1].y;
-  addBlock.block = new Block(this.x, this.y, blocks[blocks.length - 1].dir);
-  addBlock.yes = true;
-}
-
 function moveTailBlocks(){
+  /*runs through array backwards moving blocks (all but the first) to be in the same spot as the block in
+    in front of the current in the array*/
+  //essentially moving the tail forward starting from the end working ot the front
   for(var i = blocks.length - 1; i >= 0; i--){
     if(i != 0){
       blocks[i].x = blocks[i - 1].x;

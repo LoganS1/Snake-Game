@@ -20,7 +20,7 @@ var options = {
   snakeColor: "white",
   foodColor: "red",
   scoreColor: "white",
-  amtOfFood: 2,
+  amtOfFood: 1,
   blockSize: 40 //size of the blocks on the grid (Canvas is 1000 px so setting "500" would mean a 2 wide grid)
 }
 
