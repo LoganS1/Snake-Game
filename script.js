@@ -7,6 +7,8 @@ var lastScoreSpan = document.getElementById("lastScore");
 //Setting Game Variables
 var blocks = [];
 var foodPieces = [];
+var freeCords = [];
+var usedCords = [];
 var gameState = "notStarted";
 var score = 0;
 var addBlock = {
@@ -29,11 +31,13 @@ function Block(x, y, dir){
   this.x = x;
   this.y = y;
   this.dir = dir;
+  freeToUsedCords({x: x, y: y});
 }
 
 function FoodPiece(x, y){
   this.x = x;
   this.y = y;
+  freeToUsedCords({x: x, y: y});
 }
 
 //MAIN FUNCTIONS
@@ -53,8 +57,8 @@ function loop(){
 function gameDraw(){
   drawBackground();
   drawScore();
-  drawBlocks();
   drawFoodPieces();
+  drawBlocks();
 }
 
 function gameUpdate(){
@@ -115,8 +119,11 @@ function createRandXY(){
 
 function reset(){
   blocks = [];
-  foods = [];
+  foodPieces = [];
   score = 0;
+  freeCords = [];
+  usedCords = [];
+  calculateFreeCords();
   this.randCords = createRandXY();
   blocks.push(new Block(this.randCords.x, this.randCords.y, ""));
 }
@@ -139,5 +146,56 @@ document.addEventListener("keypress", function(e){
   }
 })
 
+// function checkClock(){
+//   if(score >= 20){
+//     clearInterval(gameClock);
+//     gameClock = setInterval(loop, 75);
+//   }else if(score >= 10){
+//     clearInterval(gameClock);
+//     gameClock = setInterval(loop, 100)
+//   }
+//   else if(score >= 5){
+//     clearInterval(gameClock);
+//     gameClock = setInterval(loop, 150);
+//   }else{
+//     clearInterval(gameClock);
+//     gameClock = setInterval(loop, 200);
+//   }
+// }
+
+function log(message){
+  console.log(message);
+}
+
+function calculateFreeCords(){
+  this.xLimit = canvas.width / options.blockSize; //finds the amt of x spaces using the grid size
+  this.yLimit = canvas.height /options.blockSize; //finds the amt of y spaces using the grid size
+  for(var x = 0; x < this.xLimit; x++){
+    for(var y = 0; y < this.yLimit; y++){
+      this.trueX = x * options.blockSize;
+      this.trueY = y * options.blockSize;
+      freeCords.push({x: this.trueX, y: this.trueY});
+    }
+  }
+}
+
+function freeToUsedCords(cords){
+  this.cords = cords;
+  this.indexOfCords = freeCords.indexOf(this.cords);
+  freeCords.splice(this.indexOfCords, 1);
+  if(usedCords.indexOf(this.cords) == -1){
+    usedCords.push(this.cords);
+  }
+}
+
+function usedToFreeCords(cords){
+  this.cords = cords;
+  this.indexOfCords = usedCords.indexOf(this.cords);
+  usedCords.splice(this.indexOfCords, 1);
+  if(freeCords.indexOf(this.cords) == -1){
+    freeCords.push(this.cords);
+  }
+}
+
 //Starts the game's clock
-var gameClock = setInterval(loop, 100);
+var gameClock = setInterval(loop, 200);

@@ -28,6 +28,7 @@ function createBlock(){
   this.y = blocks[blocks.length - 1].y;
   addBlock.block = new Block(this.x, this.y, blocks[blocks.length - 1].dir);
   addBlock.yes = true;
+  freeToUsedCords({x: x, y: y});
 }
 
 function moveHeadBlock(){
@@ -41,6 +42,8 @@ function moveHeadBlock(){
     }else if(this.frontBlock.dir === "left" && this.frontBlock.x > 0){
       this.frontBlock.x -= options.blockSize;
     }
+
+    freeToUsedCords({x: this.frontBlock.x, y: this.frontBlock.y});
 }
 
 function moveTailBlocks(){
@@ -49,8 +52,12 @@ function moveTailBlocks(){
   //essentially moving the tail forward starting from the end working ot the front
   for(var i = blocks.length - 1; i >= 0; i--){
     if(i != 0){
+      usedToFreeCords({x: blocks[i].x, y: blocks[i].y});
       blocks[i].x = blocks[i - 1].x;
       blocks[i].y = blocks[i - 1].y;
+      freeToUsedCords({x: blocks[i].x, y: blocks[i].y});
+    }else{
+      usedToFreeCords({x: blocks[i].x, y: blocks[i].y});
     }
   }
 }

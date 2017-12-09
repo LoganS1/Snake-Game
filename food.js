@@ -15,6 +15,20 @@ function updateFoodPieces(){
 
 //UTILS
 function createFoodPiece(){
-  this.randCords = createRandXY();
-  foodPieces.push(new FoodPiece(this.randCords.x, this.randCords.y))
+  this.cords = freeCords[Math.floor(Math.random() * freeCords.length)];
+  foodPieces.push(new FoodPiece(this.cords.x, this.cords.y));
 }
+
+// blocks.forEach(function(block){
+//   if(block.x != this.trueX && block.y != this.trueY){
+//     if(foodPieces.length < 1){
+//       this.cordOptions.push({x: this.trueX, y: this.trueY});
+//     }else{
+//       foodPieces.forEach(function(foodPiece){
+//         if(foodPiece.x != this.trueX && foodPiece.y != this.trueY){
+//           this.cordOptions.push({x: this.trueX, y: this.trueY});
+//         }
+//       })
+//     }
+//   }
+// })
