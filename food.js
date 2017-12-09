@@ -15,7 +15,8 @@ function updateFoodPieces(){
 
 //UTILS
 function createFoodPiece(){
-  this.cords = freeCords[Math.floor(Math.random() * freeCords.length)];
+  this.cords = getFreeCords();
+  freeToUsedCords(this.cords.x, this.cords.y);
   foodPieces.push(new FoodPiece(this.cords.x, this.cords.y));
 }
 

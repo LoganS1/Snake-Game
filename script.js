@@ -31,13 +31,11 @@ function Block(x, y, dir){
   this.x = x;
   this.y = y;
   this.dir = dir;
-  freeToUsedCords({x: x, y: y});
 }
 
 function FoodPiece(x, y){
   this.x = x;
   this.y = y;
-  freeToUsedCords({x: x, y: y});
 }
 
 //MAIN FUNCTIONS
@@ -89,6 +87,7 @@ function collisionDetection(){
   foodPieces.forEach(function(foodPiece){
     this.headBlock = blocks[0];
     if(foodPiece.x === this.headBlock.x && foodPiece.y === this.headBlock.y){
+      usedToFreeCords(foodPiece.x, foodPiece.y);
       foodPieces.splice(foodPieces.indexOf(foodPiece), 1); //removes foodPiece
       createBlock();
       score++;
@@ -109,14 +108,6 @@ function collisionDetection(){
 };
 
 //UTILS
-function createRandXY(){
-  this.xLimit = canvas.width / options.blockSize; //finds the amt of x spaces using the grid size
-  this.yLimit = canvas.height /options.blockSize; //finds the amt of y spaces using the grid size
-  this.x = Math.floor(Math.random() * this.xLimit) * options.blockSize; //picks a random spot on the amt of elgible spaces
-  this.y = Math.floor(Math.random() * this.yLimit) * options.blockSize; //then adds back the grid size to get the true size
-  return {x: this.x, y: this.y};
-}
-
 function reset(){
   blocks = [];
   foodPieces = [];
@@ -124,8 +115,8 @@ function reset(){
   freeCords = [];
   usedCords = [];
   calculateFreeCords();
-  this.randCords = createRandXY();
-  blocks.push(new Block(this.randCords.x, this.randCords.y, ""));
+  this.cords = getFreeCords();
+  blocks.push(new Block(this.cords.x, this.cords.y, ""));
 }
 
 //add listener to detect arrow key usage for movement
@@ -146,55 +137,8 @@ document.addEventListener("keypress", function(e){
   }
 })
 
-// function checkClock(){
-//   if(score >= 20){
-//     clearInterval(gameClock);
-//     gameClock = setInterval(loop, 75);
-//   }else if(score >= 10){
-//     clearInterval(gameClock);
-//     gameClock = setInterval(loop, 100)
-//   }
-//   else if(score >= 5){
-//     clearInterval(gameClock);
-//     gameClock = setInterval(loop, 150);
-//   }else{
-//     clearInterval(gameClock);
-//     gameClock = setInterval(loop, 200);
-//   }
-// }
-
 function log(message){
   console.log(message);
-}
-
-function calculateFreeCords(){
-  this.xLimit = canvas.width / options.blockSize; //finds the amt of x spaces using the grid size
-  this.yLimit = canvas.height /options.blockSize; //finds the amt of y spaces using the grid size
-  for(var x = 0; x < this.xLimit; x++){
-    for(var y = 0; y < this.yLimit; y++){
-      this.trueX = x * options.blockSize;
-      this.trueY = y * options.blockSize;
-      freeCords.push({x: this.trueX, y: this.trueY});
-    }
-  }
-}
-
-function freeToUsedCords(cords){
-  this.cords = cords;
-  this.indexOfCords = freeCords.indexOf(this.cords);
-  freeCords.splice(this.indexOfCords, 1);
-  if(usedCords.indexOf(this.cords) == -1){
-    usedCords.push(this.cords);
-  }
-}
-
-function usedToFreeCords(cords){
-  this.cords = cords;
-  this.indexOfCords = usedCords.indexOf(this.cords);
-  usedCords.splice(this.indexOfCords, 1);
-  if(freeCords.indexOf(this.cords) == -1){
-    freeCords.push(this.cords);
-  }
 }
 
 //Starts the game's clock
