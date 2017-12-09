@@ -54,9 +54,9 @@ function loop(){
 
 function gameDraw(){
   drawBackground();
-  drawScore();
   drawFoodPieces();
   drawBlocks();
+  drawScore();
 }
 
 function gameUpdate(){
@@ -83,9 +83,15 @@ function readyGame(){
 
 //SUB FUNCTIONS
 function collisionDetection(){
+  blockFoodCollisionDetection();
+  blockBlockCollisionDetection();
+  blockWallCollisionDetection();
+};
+
+function blockFoodCollisionDetection(){
   //Detecting if "snake" has hit food
+  this.headBlock = blocks[0];
   foodPieces.forEach(function(foodPiece){
-    this.headBlock = blocks[0];
     if(foodPiece.x === this.headBlock.x && foodPiece.y === this.headBlock.y){
       usedToFreeCords(foodPiece.x, foodPiece.y);
       foodPieces.splice(foodPieces.indexOf(foodPiece), 1); //removes foodPiece
@@ -93,19 +99,32 @@ function collisionDetection(){
       score++;
     }
   })
-  //Detecting if the "snake" has hit itself
+}
+
+function blockWallCollisionDetection(){
+  this.headBlock = blocks[0];
+  //Detecting if the "snake" is past a wall
+  if(this.headBlock.x < 0 ||
+    this.headBlock.x === canvas.width ||
+    this.headBlock.y < 0 ||
+    this.headBlock.y === canvas.height){
+    gameState = "dead";
+  }
+}
+
+function blockBlockCollisionDetection(){
+  //checking to see if the head block has hit any part of itself
+  this.headBlock = blocks[0];
+  this.amtOfCollisions = 0;
   blocks.forEach(function(block){
-    this.amtOfCollisions = 0;
-    blocks.forEach(function(block2){
-      if(block.x === block2.x && block.y === block2.y){
-        this.amtOfCollisions++;
-        if(this.amtOfCollisions > 1){ //the block will have at least one collision because it will colldie with itself
-          gameState = "dead";
-        }
+    if(block.x === this.headBlock.x && block.y === this.headBlock.y){
+      this.amtOfCollisions++;
+      if(this.amtOfCollisions > 1){ //the block will have at least one collision because it will colldie with itself
+        gameState = "dead";
       }
-    })
+    }
   })
-};
+}
 
 //UTILS
 function reset(){

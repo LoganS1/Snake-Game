@@ -15,6 +15,7 @@ function drawScore(){
   c.fillStyle = options.scoreColor;
   c.textAlign = "left";
   c.fillText("Score: " + score, canvas.width - 150, 50);
+  c.strokeText("Score: " + score, canvas.width - 150, 50);
 }
 
 //UTILS
