@@ -1,0 +1,2 @@
+# Snake-Game
+I recently (Well.. at least when I created this) saw someone else's try at creating Snake and decided to try my hand at it. I decided to use JS as that was what I knew most at the time along with the HTML Canvas Element. I had recent experience with the Canvas element because of my previous game [Torpedoed.fun](http://torpedoed.fun). After around an hour of working on it I had the basics of the game working. Over the next few days I kept working on it adding more and more to it. I am pleased with the way it turned out and hope you will be too.
