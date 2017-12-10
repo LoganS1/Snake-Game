@@ -1,8 +1,8 @@
 //Sets up canvas
 var canvas = document.getElementById("canvas");
 var c = canvas.getContext("2d");
-canvas.height = 1000;
-canvas.width = 1000;
+window.onresize = resize;
+resize();
 
 //DRAWING
 function drawBackground(){
@@ -21,4 +21,9 @@ function drawScore(){
 //UTILS
 function clearCanvas(){
   c.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+function resize(){
+  canvas.height = window.innerHeight * 0.95;
+  canvas.width = window.innerWidth * 0.95;
 }

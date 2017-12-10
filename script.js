@@ -104,10 +104,10 @@ function blockFoodCollisionDetection(){
 function blockWallCollisionDetection(){
   this.headBlock = blocks[0];
   //Detecting if the "snake" is past a wall
-  if(this.headBlock.x < 0 ||
-    this.headBlock.x === canvas.width ||
-    this.headBlock.y < 0 ||
-    this.headBlock.y === canvas.height){
+  if(this.headBlock.x <= 0 ||
+    this.headBlock.x >= canvas.width ||
+    this.headBlock.y <= 0 ||
+    this.headBlock.y >= canvas.height){
     gameState = "dead";
   }
 }
