@@ -23,7 +23,8 @@ var options = {
   foodColor: "red",
   scoreColor: "white",
   amtOfFood: 1,
-  blockSize: 40 //size of the blocks on the grid (Canvas is 1000 px so setting "500" would mean a 2 wide grid)
+  blockSize: 40, //size of the blocks on the grid (Canvas is 1000 px so setting "500" would mean a 2 wide grid)
+  speed: 200
 }
 
 //CLASSES
@@ -45,6 +46,7 @@ function loop(){
     gameUpdate(); //updates placing of all blocks
     gameDraw();
     collisionDetection(); //texts if "snake" is hitting itself or food and applies consequence
+    changeSpeed();
   }else if(gameState === "ready"){
     readyGame(); //resets and prepares game to start
   }else{
@@ -104,9 +106,9 @@ function blockFoodCollisionDetection(){
 function blockWallCollisionDetection(){
   this.headBlock = blocks[0];
   //Detecting if the "snake" is past a wall
-  if(this.headBlock.x <= 0 ||
+  if(this.headBlock.x < 0 ||
     this.headBlock.x >= canvas.width ||
-    this.headBlock.y <= 0 ||
+    this.headBlock.y < 0 ||
     this.headBlock.y >= canvas.height){
     gameState = "dead";
   }
@@ -160,5 +162,20 @@ function log(message){
   console.log(message);
 }
 
+function changeSpeed(){
+  options.speed = 200 * (1 - (score * 0.1) * 0.2);
+  if(options.speed < 25){
+    options.speed = 25;
+  }
+  if(gameClock.currInterval != options.speed){
+    clearInterval(gameClock.clock);
+    gameClock.clock = setInterval(loop, options.speed);
+    gameClock.currInterval = options.speed;
+  }
+}
+
 //Starts the game's clock
-var gameClock = setInterval(loop, 200);
+var gameClock = {
+  clock: setInterval(loop, 200),
+  currInterval: 200
+}

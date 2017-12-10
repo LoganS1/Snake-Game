@@ -26,4 +26,17 @@ function clearCanvas(){
 function resize(){
   canvas.height = window.innerHeight * 0.95;
   canvas.width = window.innerWidth * 0.95;
+
+  this.x = 0;
+  this.y = 0;
+  while(this.x < canvas.width){
+    this.x += options.blockSize;
+  }
+  while(this.y < canvas.height){
+    this.y += options.blockSize;
+  }
+  log(canvas.width - this.x);
+  canvas.width -= canvas.width - this.x;
+  canvas.height -= canvas.height - this.y;
+  log(canvas.width - this.x);
 }

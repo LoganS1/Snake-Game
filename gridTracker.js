@@ -1,6 +1,7 @@
 function calculateFreeCords(){
+  this.difference = canvas.width / canvas.height;
   this.xLimit = canvas.width / options.blockSize; //finds the amt of x spaces using the grid size
-  this.yLimit = canvas.height /options.blockSize; //finds the amt of y spaces using the grid size
+  this.yLimit = canvas.height / options.blockSize; //finds the amt of y spaces using the grid size
   for(var x = 0; x < this.xLimit; x++){
     for(var y = 0; y < this.yLimit; y++){
       this.trueX = x * options.blockSize;
