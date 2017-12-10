@@ -2,7 +2,10 @@
 var html = document.getElementById("html");
 var menuDiv = document.getElementById("menu");
 var highScoreSpan = document.getElementById("highScore");
+var highScoreDifficulty = document.getElementById("highScoreDifficulty");
 var lastScoreSpan = document.getElementById("lastScore");
+var optionsDiv = document.getElementById("options");
+var difficultySelect = document.getElementById("difficulty");
 
 //Setting Game Variables
 var blocks = [];
@@ -10,7 +13,16 @@ var foodPieces = [];
 var freeCords = [];
 var usedCords = [];
 var gameState = "notStarted";
-var score = 0;
+var scores = {
+  currentScore: 0,
+  highScores: {
+    auto: 0,
+    easy: 0,
+    medium: 0,
+    hard: 0,
+    hacker: 0
+  }
+}
 var addBlock = {
   yes: false,
   block: ""
@@ -24,7 +36,8 @@ var options = {
   scoreColor: "white",
   amtOfFood: 1,
   blockSize: 40, //size of the blocks on the grid (Canvas is 1000 px so setting "500" would mean a 2 wide grid)
-  speed: 200
+  speed: 200,
+  difficulty: "auto"
 }
 
 //CLASSES
@@ -69,11 +82,14 @@ function gameUpdate(){
 //GAME STATES
 function endGame(){
   menu.classList.remove("disappear");
+  canvas.classList.remove("hacker");
   // canvas.classList.add("disappear");
-  lastScore.innerHTML = score;
-  if(score > highScore.innerHTML){
-    highScore.innerHTML = score;
+  lastScore.innerHTML = scores.currentScore;
+  if(scores.currentScore > scores.highScores[options.difficulty]){
+    scores.highScores[options.difficulty] = scores.currentScore;
+    highScore.innerHTML = scores.highScores[options.difficulty];
   }
+  scores.currentScore = 0;
 }
 
 function readyGame(){
@@ -98,7 +114,7 @@ function blockFoodCollisionDetection(){
       usedToFreeCords(foodPiece.x, foodPiece.y);
       foodPieces.splice(foodPieces.indexOf(foodPiece), 1); //removes foodPiece
       createBlock();
-      score++;
+      scores.currentScore++;
     }
   })
 }
@@ -132,16 +148,17 @@ function blockBlockCollisionDetection(){
 function reset(){
   blocks = [];
   foodPieces = [];
-  score = 0;
+  scores.currentScore = 0;
   freeCords = [];
   usedCords = [];
+  resize();
   calculateFreeCords();
   this.cords = getFreeCords();
   blocks.push(new Block(this.cords.x, this.cords.y, ""));
 }
 
 //add listener to detect arrow key usage for movement
-document.addEventListener("keypress", function(e){
+document.addEventListener("keydown", function(e){
   switch(e.keyCode){
     case 38:
       blocks[0].dir = "up";
@@ -162,18 +179,49 @@ function log(message){
   console.log(message);
 }
 
+function difficultySelectChange(){
+  options.difficulty = difficultySelect.value;
+  highScoreDifficulty.innerHTML = options.difficulty.charAt(0).toUpperCase() + options.difficulty.slice(1, options.difficulty.length);
+  highScore.innerHTML = scores.highScores[options.difficulty];
+}
+highScore.innerHTML = scores.highScores[options.difficulty];
+
 function changeSpeed(){
-  options.speed = 200 * (1 - (score * 0.1) * 0.2);
+  switch(options.difficulty){
+    case "easy":
+      options.speed = 200;
+      break;
+    case "medium":
+      options.speed = 125;
+      break;
+    case "hard":
+      options.speed = 75;
+      break;
+    case "extreme":
+      options.speed = 50;
+      break;
+    case "hacker":
+      options.speed = 50;
+      canvas.classList.add("hacker");
+      break;
+    case "auto":
+      options.speed = 200 * (1 - (scores.currentScore * 0.1) * 0.2);
+      break;
+    default:
+      options.speed = 125;
+      break;
+  }
+
   if(options.speed < 25){
     options.speed = 25;
   }
+
   if(gameClock.currInterval != options.speed){
     clearInterval(gameClock.clock);
     gameClock.clock = setInterval(loop, options.speed);
     gameClock.currInterval = options.speed;
   }
 }
-
 //Starts the game's clock
 var gameClock = {
   clock: setInterval(loop, 200),

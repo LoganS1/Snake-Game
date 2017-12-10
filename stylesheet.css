@@ -19,6 +19,16 @@ canvas {
   border: 2px solid white;
   box-shadow: 0 0 20px white;
   z-index: -1;
+  animation-name: canvasOpening;
+  animation-duration: 1s;
+  animation-iteration-count: 1;
+}
+
+.hacker {
+animation-name: hacker;
+animation-duration: 1.5s;
+animation-iteration-count: infinite;
+
 }
 
 h1 {
@@ -33,7 +43,7 @@ h1 {
   text-align: center;
   display: inline-block;
   margin: 20px auto;
-  width: 49%;
+  width: 20%;
 }
 
 #menu {
@@ -56,4 +66,40 @@ h1 {
 #playBTN:hover {
   background-color: white;
   color: black;
+}
+
+#options{
+  display: inline-block;
+  text-align: center;
+  width: 55%;
+}
+
+#difficulty {
+  color: white;
+  background-color: black;
+  text-align: center;
+  box-shadow: none;
+  border: 1px solid white;
+  padding: 2px;
+  margin: 2px auto;
+}
+
+select {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+}
+
+select::-ms-expant {
+  display: none;
+}
+
+@keyframes canvasOpening {
+  from{height: 0; box-shadow: none;}
+  to{height: 95%; box-shadow: 0 0 20px white;}
+}
+
+@keyframes hacker {
+  0%{height: 95%;}
+  50%{height: 50%;}
+  100%{height: 95%;}
 }
