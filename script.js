@@ -20,6 +20,7 @@ var scores = {
     easy: 0,
     medium: 0,
     hard: 0,
+    extreme: 0,
     hacker: 0
   }
 }
