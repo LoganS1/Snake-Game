@@ -6,6 +6,7 @@ var highScoreDifficulty = document.getElementById("highScoreDifficulty");
 var lastScoreSpan = document.getElementById("lastScore");
 var optionsDiv = document.getElementById("options");
 var difficultySelect = document.getElementById("difficulty");
+var resetScoresBTN = document.getElementById("resetScoresBTN");
 
 //Setting Game Variables
 var blocks = [];
@@ -24,6 +25,9 @@ var scores = {
     hacker: 0
   }
 }
+if(readCookie("Snake-Game Scores")){
+  scores.highScores = JSON.parse(readCookie("Snake-Game Scores"));
+}
 var addBlock = {
   yes: false,
   block: ""
@@ -38,7 +42,20 @@ var options = {
   amtOfFood: 1,
   blockSize: 40, //size of the blocks on the grid (Canvas is 1000 px so setting "500" would mean a 2 wide grid)
   speed: 200,
-  difficulty: "auto"
+  difficulty: "auto",
+  useCookies: false
+}
+
+//Check if user has enabled cookies before
+if(readCookie("Snake-Game Scores")){
+  options.useCookies = true;
+}else{
+  this.useCookie = confirm("Would you like to save your highscores to this computer using a cookie?");
+  if(this.useCookie){
+    options.useCookies = true;
+  }else{
+    options.useCookies = false;
+  }
 }
 
 //CLASSES
@@ -89,6 +106,9 @@ function endGame(){
   if(scores.currentScore > scores.highScores[options.difficulty]){
     scores.highScores[options.difficulty] = scores.currentScore;
     highScore.innerHTML = scores.highScores[options.difficulty];
+  }
+  if(options.useCookies){
+    createCookie("Snake-Game Scores", JSON.stringify(scores.highScores), 365);
   }
   scores.currentScore = 0;
 }
@@ -223,6 +243,51 @@ function changeSpeed(){
     gameClock.currInterval = options.speed;
   }
 }
+
+//Score Saving (Using Cookied)
+
+//Cookie UTILS
+function createCookie(name,value,days) {
+    var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + value + expires + "; path=/";
+}
+
+function readCookie(name) {
+    var nameEQ = name + "=";
+    var cookieArr = document.cookie.split(';');
+    for(var i = 0; i < cookieArr.length; i++) {
+        this.c = cookieArr[i];
+        while (this.c.charAt(0)==' '){
+          this.c = this.c.substring(1,c.length);
+        }
+        if (this.c.indexOf(nameEQ) == 0){
+          return this.c.substring(nameEQ.length,this.c.length);
+        }
+    }
+    return null;
+}
+
+function eraseCookie(name) {
+    createCookie(name, "", -1);
+}
+
+resetScoresBTN.addEventListener("click", function(){
+  eraseCookie("Snake-Game Scores");
+  scores.highScores = {
+    auto: 0,
+    easy: 0,
+    medium: 0,
+    hard: 0,
+    extreme: 0,
+    hacker: 0
+  }
+  highScore.innerHTML = scores.highScores[options.difficulty];
+})
 //Starts the game's clock
 var gameClock = {
   clock: setInterval(loop, 200),

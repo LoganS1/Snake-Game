@@ -54,16 +54,24 @@ h1 {
 }
 
 #playBTN {
+  padding: 5px 50px;
+}
+
+#resetScoresBTN {
+  padding: 5px;
+  margin: 5px 0 0 0;
+}
+
+.BTN {
   margin: 0 auto;
   display: block;
   background-color: black;
   color: white;
-  padding: 5px 50px;
-  border: 1px solid white;
   transition: all 0.5s;
+  border: 1px solid white;
 }
 
-#playBTN:hover {
+.BTN:hover {
   background-color: white;
   color: black;
 }
