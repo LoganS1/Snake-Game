@@ -25,13 +25,6 @@ var scores = {
     hacker: 0
   }
 }
-if(readCookie("Snake-Game Scores")){
-  scores.highScores = JSON.parse(readCookie("Snake-Game Scores"));
-}
-var addBlock = {
-  yes: false,
-  block: ""
-}
 
 //Ability to easily change options below
 var options = {
@@ -42,20 +35,7 @@ var options = {
   amtOfFood: 1,
   blockSize: 40, //size of the blocks on the grid (Canvas is 1000 px so setting "500" would mean a 2 wide grid)
   speed: 200,
-  difficulty: "auto",
-  useCookies: false
-}
-
-//Check if user has enabled cookies before
-if(readCookie("Snake-Game Scores")){
-  options.useCookies = true;
-}else{
-  this.useCookie = confirm("Would you like to save your highscores to this computer using a cookie?");
-  if(this.useCookie){
-    options.useCookies = true;
-  }else{
-    options.useCookies = false;
-  }
+  difficulty: "auto"
 }
 
 //CLASSES
@@ -78,6 +58,7 @@ function loop(){
     gameDraw();
     collisionDetection(); //texts if "snake" is hitting itself or food and applies consequence
     changeSpeed();
+    lastScoreSpan.innerHTML = scores.currentScore; //saves score to lastScore on menu
   }else if(gameState === "ready"){
     readyGame(); //resets and prepares game to start
   }else{
@@ -102,15 +83,12 @@ function endGame(){
   menu.classList.remove("disappear");
   canvas.classList.remove("hacker");
   // canvas.classList.add("disappear");
-  lastScore.innerHTML = scores.currentScore;
   if(scores.currentScore > scores.highScores[options.difficulty]){
     scores.highScores[options.difficulty] = scores.currentScore;
     highScore.innerHTML = scores.highScores[options.difficulty];
   }
-  if(options.useCookies){
-    createCookie("Snake-Game Scores", JSON.stringify(scores.highScores), 365);
-  }
   scores.currentScore = 0;
+  saveScores()
 }
 
 function readyGame(){
@@ -196,16 +174,12 @@ document.addEventListener("keydown", function(e){
   }
 })
 
-function log(message){
-  console.log(message);
-}
-
 function difficultySelectChange(){
   options.difficulty = difficultySelect.value;
   highScoreDifficulty.innerHTML = options.difficulty.charAt(0).toUpperCase() + options.difficulty.slice(1, options.difficulty.length);
-  highScore.innerHTML = scores.highScores[options.difficulty];
+  highScoreSpan.innerHTML = scores.highScores[options.difficulty];
 }
-highScore.innerHTML = scores.highScores[options.difficulty];
+
 
 function changeSpeed(){
   switch(options.difficulty){
@@ -244,40 +218,50 @@ function changeSpeed(){
   }
 }
 
-//Score Saving (Using Cookied)
+//Score Saving (Using LocalStorage)
+//check if scores have been saved before, if not save empty scores
+function checkScores(){
+  if(!localStorage.getItem("scores")){
+    localStorage.setItem("scores", JSON.stringify(scores.highScores));
+  }else{
+    scores.highScores = JSON.parse(localStorage.getItem("scores"));
+  }
+}
+checkScores();
 
-//Cookie UTILS
-function createCookie(name,value,days) {
-    var expires = "";
-    if (days) {
-        var date = new Date();
-        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-        expires = "; expires=" + date.toUTCString();
+//set the high score on first load after getting scores
+highScoreSpan.innerHTML = scores.highScores[options.difficulty];
+
+function saveScores(){
+  if(JSON.stringify(scores.highScores) != localStorage.getItem("scores")){
+    //check if any scores are saved, if not save empty scores
+    if(!localStorage.getItem("scores")){
+      localStorage.setItem("scores", JSON.stringify(scores.highScores));
     }
-    document.cookie = name + "=" + value + expires + "; path=/";
-}
-
-function readCookie(name) {
-    var nameEQ = name + "=";
-    var cookieArr = document.cookie.split(';');
-    for(var i = 0; i < cookieArr.length; i++) {
-        this.c = cookieArr[i];
-        while (this.c.charAt(0)==' '){
-          this.c = this.c.substring(1,c.length);
-        }
-        if (this.c.indexOf(nameEQ) == 0){
-          return this.c.substring(nameEQ.length,this.c.length);
-        }
+    this.savedScores = JSON.parse(localStorage.getItem("scores"));
+    //TODO - change data structure!
+    //yes, I do know the below causes pure terror...
+    if(scores.highScores.auto > this.savedScores.auto){
+      this.savedScores.auto = scores.highScores.auto
+    }else if(scores.highScores.easy > this.savedScores.easy){
+      this.savedScores.easy = scores.highScores.easy
+    }else if(scores.highScores.medium > this.savedScores.medium){
+      this.savedScores.medium = scores.highScores.medium
+    }else if(scores.highScores.hard > this.savedScores.hard){
+      this.savedScores.hard = scores.highScores.hard
+    }else if(scores.highScores.extreme > this.savedScores.extreme){
+      this.savedScores.extreme = scores.highScores.extreme
+    }else if(scores.highScores.hacker > this.savedScores.hacker){
+      this.savedScores.hacker = scores.highScores.hacker
     }
-    return null;
+    //save the score to storage
+    localStorage.setItem("scores", JSON.stringify(this.savedScores));
+    console.log("saved scores");
+  }
 }
 
-function eraseCookie(name) {
-    createCookie(name, "", -1);
-}
-
+//reset scores
 resetScoresBTN.addEventListener("click", function(){
-  eraseCookie("Snake-Game Scores");
   scores.highScores = {
     auto: 0,
     easy: 0,
@@ -286,8 +270,10 @@ resetScoresBTN.addEventListener("click", function(){
     extreme: 0,
     hacker: 0
   }
+  localStorage.removeItem("scores");
   highScore.innerHTML = scores.highScores[options.difficulty];
 })
+
 //Starts the game's clock
 var gameClock = {
   clock: setInterval(loop, 200),
