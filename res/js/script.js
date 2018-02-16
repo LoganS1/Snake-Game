@@ -14,6 +14,7 @@ var foodPieces = [];
 var freeCords = [];
 var usedCords = [];
 var gameState = "notStarted";
+var mobile;
 var scores = {
   currentScore: 0,
   highScores: {
@@ -24,6 +25,16 @@ var scores = {
     extreme: 0,
     hacker: 0
   }
+}
+
+if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
+  mobile = true;
+}else {
+  mobile = false;
+}
+
+if(screen.width < 500){
+  alert("Please turn your phone sideways or use a bigger screen for optimal play!");
 }
 
 //Ability to easily change options below
@@ -81,6 +92,9 @@ function gameUpdate(){
 //GAME STATES
 function endGame(){
   menu.classList.remove("disappear");
+  if(mobile){
+    btnContainer.classList.add("disappear");
+  }
   canvas.classList.remove("hacker");
   // canvas.classList.add("disappear");
   if(scores.currentScore > scores.highScores[options.difficulty]){
@@ -93,6 +107,9 @@ function endGame(){
 
 function readyGame(){
   menuDiv.classList.add("disappear");
+  if(mobile){
+    btnContainer.classList.remove("disappear");
+  }
   // canvas.classList.remove("disappear");
   reset();
   gameState = "started";
@@ -159,6 +176,7 @@ function reset(){
 //add listener to detect arrow key usage for movement
 document.addEventListener("keydown", function(e){
   switch(e.keyCode){
+    //arrow keys
     case 38:
       blocks[0].dir = "up";
       break;
@@ -169,6 +187,19 @@ document.addEventListener("keydown", function(e){
       blocks[0].dir = "right";
       break;
     case 37:
+      blocks[0].dir = "left";
+      break;
+    //wasd keys
+    case 87:
+      blocks[0].dir = "up";
+      break;
+    case 83:
+      blocks[0].dir = "down";
+      break;
+    case 68:
+      blocks[0].dir = "right";
+      break;
+    case 65:
       blocks[0].dir = "left";
       break;
   }

@@ -12,6 +12,7 @@
     <div id="menu">
       <div class="name">
         <h1>SNAKE</h1>
+        <h5>WASD or Arrow Keys to move / Mobile controls available</h5>
       </div>
       <div class="scores">
         <h4>Last Play's Score: <br /><span id="lastScore">0</span></h4>
@@ -19,7 +20,7 @@
       <div id="options">
         <label for="difficulty">Difficulty: <br />
           <select id="difficulty" onchange="difficultySelectChange()">
-            <option value="auto" selected="selected">Auto (increases as you play)</option>
+            <option value="auto" selected="selected">Auto</option>
             <option value="easy">Easy</option>
             <option value="medium">Medium</option>
             <option value="hard">Hard</option>
@@ -27,15 +28,34 @@
             <option value="hacker">Hacker</option>
           </select>
         </label>
+        <button id="playBTN" class="BTN" onClick="gameState = 'ready';">Play</button>
       </div>
-      <div class="scores">
+      <div class="scores scoresRight">
         <h4>Your High Score For: <span id="highScoreDifficulty">Auto</span> - <span id="highScore"></span></h4>
         <button id="resetScoresBTN" class="BTN" type="button" name="button">Reset Scores</button>
       </div>
-      <button id="playBTN" class="BTN" onClick="gameState = 'ready';">Play</button>
     </div>
-
+    <div class="disappear" id="btnContainer">
+      <table>
+          <tr>
+              <td></td>
+              <td class=""><button id="upArrow" class="arrowBtn">↑</button></td>
+              <td></td>
+          </tr>
+          <tr>
+              <td class=""><button id="leftArrow" class="arrowBtn">←</button></td>
+              <td></td>
+              <td class=""><button id="rightArrow" class="arrowBtn">→</button></td>
+          </tr>
+          <tr>
+              <td></td>
+              <td class=""><button id="downArrow" class="arrowBtn">↓</button></td>
+              <td></td>
+          </tr>
+      </table>
+  </div>
     <script type="text/javascript" src="res/js/script.js"></script>
+    <script type="text/javascript" src="res/js/mobileControls.js"></script>
     <script type="text/javascript" src="res/js/canvas.js"></script>
     <script type="text/javascript" src="res/js/gridTracker.js"></script>
     <script type="text/javascript" src="res/js/food.js"></script>

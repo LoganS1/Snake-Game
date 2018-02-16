@@ -5,12 +5,14 @@
 
 html, body {
   height: 100%;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: black;
   color: white;
   z-index: -1;
+  font-size: 1.2em;
 }
 
 canvas {
@@ -35,6 +37,10 @@ h1 {
   text-align: center;
 }
 
+h5 {
+  text-align: center;
+}
+
 .disappear {
   display: none;
 }
@@ -43,23 +49,32 @@ h1 {
   text-align: center;
   display: inline-block;
   margin: 20px auto;
-  width: 20%;
+  width: 27%;
+}
+
+.scoresRight {
+  width: 22%;
 }
 
 #menu {
-  width: 500px;
+  width: 80%;
   margin: auto;
   background-color: rgba(0, 0, 0, 0.5);
   padding: 10px;
 }
 
 #playBTN {
+  margin: 10px auto;
   padding: 5px 50px;
+  font-size: 0.8em;
+  animation-name: playBtnAnim;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
 }
 
 #resetScoresBTN {
   padding: 5px;
-  margin: 5px 0 0 0;
+  margin: 5px auto 0 auto;
 }
 
 .BTN {
@@ -77,9 +92,11 @@ h1 {
 }
 
 #options{
+  margin: 10px auto;
   display: inline-block;
   text-align: center;
-  width: 55%;
+  width: 40%;
+
 }
 
 #difficulty {
@@ -88,7 +105,8 @@ h1 {
   text-align: center;
   box-shadow: none;
   border: 1px solid white;
-  padding: 2px;
+  font-size: 0.8em;
+  padding: 5px;
   margin: 2px auto;
 }
 
@@ -110,4 +128,25 @@ select::-ms-expant {
   0%{height: 95%;}
   50%{height: 50%;}
   100%{height: 95%;}
+}
+
+@keyframes playBtnAnim {
+  0%{transform: scale(1)}
+  50%{transform: scale(1.1)}
+  100%{transform: scale(1)}
+}
+
+#btnContainer {
+  position: fixed;
+  bottom: 5%;
+  right: 5%;
+}
+
+.arrowBtn {
+  background-color: darkgrey;
+  text-align: center;
+  height: 60px;
+  width: 60px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
 }
