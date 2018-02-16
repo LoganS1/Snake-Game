@@ -49,11 +49,11 @@ h5 {
   text-align: center;
   display: inline-block;
   margin: 20px auto;
-  width: 27%;
+  width: 29.5%;
 }
 
 .scoresRight {
-  width: 22%;
+  width: 20%;
 }
 
 #menu {
@@ -92,7 +92,7 @@ h5 {
 }
 
 #options{
-  margin: 10px auto;
+  margin: 20px auto;
   display: inline-block;
   text-align: center;
   width: 40%;
