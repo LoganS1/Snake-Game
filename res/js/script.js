@@ -172,6 +172,10 @@ function reset(){
   this.cords = getFreeCords();
   blocks.push(new Block(this.cords.x, this.cords.y, ""));
 }
+//disable zoom on ios 10
+document.addEventListener('gesturestart', function (e) {
+  e.preventDefault();
+});
 
 //add listener to detect arrow key usage for movement
 document.addEventListener("keydown", function(e){
@@ -293,16 +297,19 @@ function saveScores(){
 
 //reset scores
 resetScoresBTN.addEventListener("click", function(){
-  scores.highScores = {
-    auto: 0,
-    easy: 0,
-    medium: 0,
-    hard: 0,
-    extreme: 0,
-    hacker: 0
+  if(confirm("Are you sure you want to reset your scores?")){
+    scores.highScores = {
+      auto: 0,
+      easy: 0,
+      medium: 0,
+      hard: 0,
+      extreme: 0,
+      hacker: 0
+    }
+    localStorage.removeItem("scores");
+    highScore.innerHTML = scores.highScores[options.difficulty];
+    lastScoreSpan.innerHTML = 0;
   }
-  localStorage.removeItem("scores");
-  highScore.innerHTML = scores.highScores[options.difficulty];
 })
 
 //Starts the game's clock
